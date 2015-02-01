@@ -21,8 +21,9 @@
     "license": "GPL-3.0",
     "require": {
         "php": ">=5.4.36",
-        "cyberrebell/bootgrid-data-service": "dev-master",
-        "cyberrebell/doctrine-entity-form-generator": "dev-master"
+        "cyberrebell/doctrine-entity-reader": "dev-master",
+        "cyberrebell/doctrine-entity-form-generator": "dev-master",
+        "cyberrebell/bootgrid-data-service": "dev-master"
     },
     "autoload": {
         "psr-0": {
