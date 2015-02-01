@@ -1,0 +1,32 @@
+{
+    "name": "cyberrebell/bootgrid-data-module",
+    "description": "zf2+doctrine module to provide a full featured jQuery bootgrid list including REST-Data and CRUD-Actions",
+    "authors": [
+        {
+            "name": "Cyberrebell",
+            "email": "chainsaw75@web.de"
+        }
+    ],
+    "type": "library",
+    "keywords": [
+        "zf2",
+        "zend",
+        "doctrine",
+        "entity",
+        "annotation",
+        "jQuery",
+        "bootgrid",
+        "module"
+    ],
+    "license": "GPL-3.0",
+    "require": {
+        "php": ">=5.4.36",
+        "cyberrebell/bootgrid-data-service": "dev-master",
+        "cyberrebell/doctrine-entity-form-generator": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "BootgridDataModule\\": "library/"
+        }
+    }
+}
