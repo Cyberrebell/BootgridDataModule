@@ -6,6 +6,10 @@ use Zend\Mvc\Controller\AbstractActionController;
 
 class BootgridController extends AbstractActionController
 {
+	function listAction() {
+		
+	}
+	
 	function showAction() {
 		 
 	}
