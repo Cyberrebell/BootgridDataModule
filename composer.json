@@ -21,7 +21,8 @@
     "license": "GPL-3.0",
     "require": {
         "php": ">=5.4.36",
-        "cyberrebell/bootgrid-data-service": "dev-master"
+        "cyberrebell/bootgrid-data-service": "dev-master",
+        "cyberrebell/zf2doctrine-crudhandler": "dev-master"
     },
     "autoload": {
         "psr-0": {
