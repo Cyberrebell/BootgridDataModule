@@ -33,6 +33,16 @@ class ConfigReader
 		}
 	}
 	
+	function getPropertyBlacklist($entity) {
+		$entityConfig = $this->getEntityConfig($entity);
+		
+		if (array_key_exists('blacklist', $entityConfig)) {
+			return $entityConfig['blacklist'];
+		} else {
+			throw new \Exception('"blacklist" entry for entity "' . $entity . '" is not set in "bootgrid-data" config!');
+		}
+	}
+	
 	protected function getEntityConfig($entity) {
 		$bootgridConfig = $this->getBootgridConfig();
 		

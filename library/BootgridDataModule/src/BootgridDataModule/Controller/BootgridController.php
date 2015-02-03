@@ -12,26 +12,30 @@ use ZF2DoctrineCrudHandler\Handler\DeleteHandler;
 
 class BootgridController extends AbstractActionController
 {
+	protected $configReader;
+	protected $entity;
+	
 	function listAction() {
-		$handler = new BootgridListHandler($this->getServiceLocator(), $this->getServiceLocator()->get('Doctrine\ORM\EntityManager'), $this->getEntityNamespace());
+		$handler = new BootgridListHandler($this->getServiceLocator(), $this->getObjectManager(), $this->getEntityNamespace());
+		$handler->setPropertyBlacklist($this->getPropertyBlacklist());
 		return $handler->getViewModel();
 	}
 	
 	function showAction() {
-		$handler = new ShowHandler($this->getServiceLocator(), $this->getServiceLocator()->get('Doctrine\ORM\EntityManager'), $this->getEntityNamespace());
+		$handler = new ShowHandler($this->getServiceLocator(), $this->getObjectManager(), $this->getEntityNamespace());
 		$handler->setEntityId($this->params('id', false));
 		return $handler->getViewModel();
 	}
 	
 	function addAction() {
-		$handler = new AddHandler($this->getServiceLocator(), $this->getServiceLocator()->get('Doctrine\ORM\EntityManager'), $this->getEntityNamespace());
+		$handler = new AddHandler($this->getServiceLocator(), $this->getObjectManager(), $this->getEntityNamespace());
 		$handler->setRequest($this->getRequest());
 		$handler->setSuccessRedirect($this->redirect(), 'list');
 		return $handler->getViewModel();
 	}
 	
 	function editAction() {
-		$handler = new EditHandler($this->getServiceLocator(), $this->getServiceLocator()->get('Doctrine\ORM\EntityManager'), $this->getEntityNamespace());
+		$handler = new EditHandler($this->getServiceLocator(), $this->getObjectManager(), $this->getEntityNamespace());
 		$handler->setEntityId($this->params('id', false));
 		$handler->setRequest($this->getRequest());
 		$handler->setSuccessRedirect($this->redirect(), 'list');
@@ -39,18 +43,34 @@ class BootgridController extends AbstractActionController
 	}
 	
 	function deleteAction() {
-		$handler = new DeleteHandler($this->getServiceLocator(), $this->getServiceLocator()->get('Doctrine\ORM\EntityManager'), $this->getEntityNamespace());
+		$handler = new DeleteHandler($this->getServiceLocator(), $this->getObjectManager(), $this->getEntityNamespace());
 		$handler->setEntityId($this->params()->fromRoute('id', false));
 		$handler->setSuccessRedirect($this->redirect(), 'list');
 		return $handler->getViewModel();
 	}
 	
-	protected function getEntityNamespace () {
-		$entity = $this->params()->fromRoute('entity');
-		if (!$entity) {
-			$this->redirect()->toRoute('/');
+	protected function getEntityNamespace() {
+		$this->configReader = new ConfigReader($this->getServiceLocator()->get('Config'));
+		return $this->configReader->getEntityNamespace($this->getEntity());
+	}
+	
+	protected function getPropertyBlacklist() {
+		$this->configReader = new ConfigReader($this->getServiceLocator()->get('Config'));
+		return $this->configReader->getPropertyBlacklist($this->getEntity());
+	}
+	
+	protected function getEntity() {
+		if (!$this->entity) {
+			$this->entity = $this->params()->fromRoute('entity');
+			if (!$this->entity) {
+				$this->redirect()->toRoute('/');
+				return false;
+			}
 		}
-		$configReader = new ConfigReader($this->getServiceLocator()->get('Config'));
-		return $configReader->getEntityNamespace($entity);
+		return $this->entity;
+	}
+	
+	protected function getObjectManager() {
+		return $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
 	}
 }
