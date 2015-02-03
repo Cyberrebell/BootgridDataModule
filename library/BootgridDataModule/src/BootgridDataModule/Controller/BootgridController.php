@@ -5,7 +5,7 @@ namespace BootgridDataModule\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use ZF2DoctrineCrudHandler\Handler\ShowHandler;
 use BootgridDataModule\Config\ConfigReader;
-use ZF2DoctrineCrudHandler\Handler\ListHandler;
+use BootgridDataModule\Handler\BootgridListHandler;
 use ZF2DoctrineCrudHandler\Handler\AddHandler;
 use ZF2DoctrineCrudHandler\Handler\EditHandler;
 use ZF2DoctrineCrudHandler\Handler\DeleteHandler;
@@ -13,7 +13,7 @@ use ZF2DoctrineCrudHandler\Handler\DeleteHandler;
 class BootgridController extends AbstractActionController
 {
 	function listAction() {
-		$handler = new ListHandler($this->getServiceLocator(), $this->getServiceLocator()->get('Doctrine\ORM\EntityManager'), $this->getEntityNamespace());
+		$handler = new BootgridListHandler($this->getServiceLocator(), $this->getServiceLocator()->get('Doctrine\ORM\EntityManager'), $this->getEntityNamespace());
 		return $handler->getViewModel();
 	}
 	
