@@ -18,11 +18,11 @@ return [
         	'bootgrid' => [
         		'type' => 'Segment',
         		'options' => [
-        			'route' => '/bootgrid[/:entity[/:action]]',
+        			'route' => '/bootgrid[/:entity[/:action[/:id]]]',
         			'defaults' => [
         				'__NAMESPACE__' => 'BootgridDataModule\Controller',
         				'controller' => 'Bootgrid',
-        				'action' => 'show'
+        				'action' => 'list'
         			]
         		]
        		]
