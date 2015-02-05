@@ -1,5 +1,5 @@
-<h2><?php echo $this->translate('list ' . $title); ?></h2>
-<table id="grid-data-api" class="table table-condensed table-hover table-striped" data-toggle="bootgrid" data-ajax="true" data-url="/bootgrid-data/<?php echo strtolower($title) ?>">
+<h2><?php echo $this->translate($title . 'list'); ?></h2>
+<table id="grid-data-api" class="table table-condensed table-hover table-striped" data-ajax="true" data-url="/bootgrid-data/<?php echo strtolower($title) ?>" data-entity="<?php echo strtolower($title) ?>">
 	<thead>
 		<tr>
 			<?php foreach ($entityProperties as $propertyName): ?>
@@ -13,30 +13,30 @@
             </th>
             <?php endif; ?>
             <?php endforeach; ?>
-            <th class="crudlist-iconcol">
-                <?php foreach ($listHeadIcons as $icon => $ref): ?>
-                    <a title="<?php echo $this->translate($icon); ?>" class="<?php echo $icon; ?>-icon crudlist-icon" href="<?php echo $ref; ?>">
-                        <span></span>
-                    </a>
-                <?php endforeach; ?>
-            </th>
+            <th data-column-id="bootgrid-btn-bar" data-formatter="commands" data-sortable="false">Commands</th>
 		</tr>
 	</thead>
 </table>
 
 <?php $this->inlineScript()->captureStart();
 echo <<<JS
-$("#grid-data-api").bootgrid({
-	selection: true,
-	multiSelect: true,
-	rowSelect: true,
-	keepSelection: true,
+var entity = $('#grid-data-api').attr('data-entity');
+$('#grid-data-api').bootgrid({
+	rowCount: [50, 200, 1000],
 	formatters: {
-		"link": function(column, row)
-		{
-			return "<a href=\"#\">" + column.id + ": " + row.id + "</a>";
+		'commands': function(column, row){
+			return '<a class="btn btn-xs btn-default" href="#" data-toggle="popover" data-html="true" '
+				+ 'title="Realy delete the ' + entity + '?" data-content="Push the security-button: '
+				+ '<a class=&quot;btn btn-xs btn-danger&quot; href=&quot;/bootgrid/' + entity + '/delete/' + row.id + '&quot;><span class=&quot;glyphicon glyphicon-trash&quot; /></a>'
+				+ '"><span class="glyphicon glyphicon-trash" /></a>';
 		}
 	}
+}).on('loaded.rs.jquery.bootgrid', function(e){
+	$(this).children('tbody').children('tr').dblclick(function(){
+		window.location.href = '/bootgrid/' + entity + '/edit/' + $(this).attr('data-row-id');
+	});
+	$('[data-toggle=popover]').popover();
 });
+$('#grid-data-api-header').find('.col-sm-12.actionBar').append('<div class="btn-group"><a class="btn btn-success" href="' + '/bootgrid/' + entity + '/add' + '"><span class="glyphicon glyphicon-plus" /></a></div>');
 JS;
 $this->inlineScript()->captureEnd();
