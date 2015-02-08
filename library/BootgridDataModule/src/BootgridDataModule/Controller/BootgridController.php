@@ -31,6 +31,7 @@ class BootgridController extends AbstractActionController
 		$handler = new AddHandler($this->getServiceLocator(), $this->getObjectManager(), $this->getEntityNamespace());
 		$handler->setRequest($this->getRequest());
 		$handler->setSuccessRedirect($this->redirect(), 'bootgrid', ['entity' => $this->params('entity', false), 'action' => 'list']);
+		$handler->setPropertyBlacklist($this->getPropertyBlacklist());
 		return $handler->getViewModel();
 	}
 	
@@ -39,6 +40,7 @@ class BootgridController extends AbstractActionController
 		$handler->setEntityId($this->params('id', false));
 		$handler->setRequest($this->getRequest());
 		$handler->setSuccessRedirect($this->redirect(), 'bootgrid', ['entity' => $this->params('entity', false), 'action' => 'list']);
+		$handler->setPropertyBlacklist($this->getPropertyBlacklist());
 		return $handler->getViewModel();
 	}
 	
